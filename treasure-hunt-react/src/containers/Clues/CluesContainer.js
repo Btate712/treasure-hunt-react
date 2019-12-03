@@ -2,16 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Clue from '../../components/Clue';
 import ClueInput from '../../components/ClueInput';
+import createClue from '../../actions/createClue';
+import URL from '../../appData/URL';
 
 class CluesContainer extends React.Component {
   state = {
     newClueDesired: false
-  }
-
-  showNewClueInput = () => {
-    if(this.state.newClueDesired) {
-      return <ClueInput />
-    }
   }
 
   renderClues = () => {
@@ -23,6 +19,17 @@ class CluesContainer extends React.Component {
     }
   }
 
+  createClue = (clue, huntId) => {
+    this.props.createClue(URL, clue, huntId, this.props.token);
+    this.setState({ newClueDesired: false })
+  }
+
+  showNewClueInput = () => {
+    if(this.state.newClueDesired) {
+      console.log(this.props)
+      return <ClueInput createClue={this.createClue} huntId={this.props.hunt.hunt.id}/>
+    }
+  }
 
   render() {
     return (
@@ -40,10 +47,16 @@ class CluesContainer extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return ({
     token: state.user.token
   })
 }
 
-export default connect(mapStateToProps)(CluesContainer);
+const mapDispatchToProps = dispatch => {
+  return ({
+    createClue: (url, clue, huntId, authToken) => dispatch(createClue(url, clue, huntId, authToken))
+  })
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CluesContainer);
