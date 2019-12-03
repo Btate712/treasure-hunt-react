@@ -2,10 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import login from '../actions/login';
 import LoginForm from '../components/LoginForm';
+import URL from '../appData/URL'
+import { Redirect } from 'react-router-dom';
 
 class LoginContainer extends React.Component {
+
+  checkToken() {
+    return !!this.props.user.token ? <Redirect to='/hunts' /> : <LoginForm login={this.props.login} url={URL} />
+  }
+
   render() {
-    return (<LoginForm login={this.props.login} />)
+    return ( this.checkToken() )
   }
 }
 
@@ -17,7 +24,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return ({
-    login: (name, password) => dispatch(login(name, password)),
+    login: (url, name, password) => dispatch(login(url, name, password)),
   })
 }
 

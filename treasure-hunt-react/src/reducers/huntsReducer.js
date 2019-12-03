@@ -1,16 +1,16 @@
-const huntReducer = (state = { hunt: {} , inProgress: false } , action) => {
+const huntsReducer = (state = { hunts: [], inProgress: false } , action) => {
 
   switch(action.type) {
-    case 'LOADING_HUNT':
+    case 'LOADING_HUNTS':
       return {
         ...state,
         inProgress: true
       }
 
-    case 'ADD_HUNT':
+    case 'ADD_HUNTS':
       return {
         inProgress: false,
-        hunt: action.hunt
+        hunts: action.hunts
       }
 
     default:
@@ -19,4 +19,4 @@ const huntReducer = (state = { hunt: {} , inProgress: false } , action) => {
 }
 
 
-export default huntReducer
+export default huntsReducer

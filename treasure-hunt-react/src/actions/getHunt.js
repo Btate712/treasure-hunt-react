@@ -1,16 +1,16 @@
-function getHunts(url, authToken) {
+function getHunt(url, id, authToken) {
   return dispatch => {
-    dispatch({ type: 'LOADING_HUNTS' });
+    dispatch({ type: 'LOADING_HUNT' });
     const configurationObject = {
       headers: { "Content-type": "application/json", "Authorization": authToken},
     }
-    fetch(`${url}/hunts`, configurationObject)
+    fetch(`${url}/hunts/${id}`, configurationObject)
       .then(response => response.json())
       .then(json => {
         console.log(json);
-        dispatch({ type: 'ADD_HUNTS', hunts: json });
+        dispatch({ type: 'ADD_HUNT', hunt: json });
       });
   }
 }
 
-export default getHunts;
+export default getHunt;
