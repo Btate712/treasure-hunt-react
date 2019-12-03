@@ -9,7 +9,8 @@ function login(url, username, password) {
     fetch(`${url}/auth/login`, configurationObject)
       .then(response => response.json())
       .then(json => {
-        dispatch({ type: 'LOGGED_IN', token: json.access_token });
+        dispatch({ type: 'LOGGED_IN' });
+        sessionStorage.setItem('jwtToken', json.access_token);
       });
   }
 }

@@ -3,25 +3,45 @@ import { connect } from 'react-redux';
 import getHunts from '../../actions/getHunts';
 import URL from '../../appData/URL';
 import Hunt from '../../components/Hunt';
+import { Redirect } from 'react-router-dom'
 
 class HuntsIndexContainer extends React.Component {
 
   componentDidMount = () => {
-    this.props.getHunts(URL, this.props.token);
+    if(this.props.user.loggedIn) {
+      console.log(this.props);
+      this.props.getHunts(URL, this.props.token);
+    }
   }
 
   renderHunts = () => {
     const hunts = this.props.hunts.hunts;
-    return hunts.map((hunt, index) => <Hunt key={index} hunt={hunt} />);
+    if(hunts !== []) {
+      console.log(hunts);
+      return hunts.map((hunt, index) => <Hunt key={index} hunt={hunt} />);
+    } else {
+      return null;
+    }
+  }
+
+  renderOrLogin = () => {
+    if(this.props.user.loggedIn) {
+      return (
+        <div>
+          <h1>Hunts:</h1>
+          {this.renderHunts()}
+          <button onClick={() => console.log(this.props.hunts)}>Show Props</button>
+        </div> );
+    } else {
+      return ( <Redirect to="/login" /> );
+    }
   }
 
   render() {
     return (
-      <div>
-        <h1>Hunts:</h1>
-        {this.renderHunts()}
-        <button onClick={() => console.log(this.props.hunts)}>Show Props</button>
-      </div>
+      <>
+        { this.renderOrLogin() }
+      </>
     );
   }
 }
@@ -29,7 +49,7 @@ class HuntsIndexContainer extends React.Component {
 const mapStateToProps = (state) => {
   return ({
     hunts: state.huntsData,
-    token: state.user.token
+    user: state.user
   })
 }
 

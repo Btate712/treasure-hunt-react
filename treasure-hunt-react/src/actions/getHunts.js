@@ -1,8 +1,8 @@
-function getHunts(url, authToken) {
+function getHunts(url) {
   return dispatch => {
     dispatch({ type: 'LOADING_HUNTS' });
     const configurationObject = {
-      headers: { "Content-type": "application/json", "Authorization": authToken},
+      headers: { "Content-type": "application/json", "Authorization": sessionStorage.getItem('jwtToken')},
     }
     fetch(`${url}/hunts`, configurationObject)
       .then(response => response.json())

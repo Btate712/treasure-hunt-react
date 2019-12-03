@@ -1,4 +1,4 @@
-function createClue(url, clue, huntId, authToken) {
+function createClue(url, clue, huntId) {
   clue.hunt_id = huntId;
   return dispatch => {
     dispatch({ type: 'CREATING_CLUE' });
@@ -6,7 +6,7 @@ function createClue(url, clue, huntId, authToken) {
       method: "POST",
       headers: {
         "Content-type": "application/json",
-        "Authorization": authToken,
+        "Authorization": sessionStorage.getItem('jwtToken'),
       },
       body: JSON.stringify(clue)
     }

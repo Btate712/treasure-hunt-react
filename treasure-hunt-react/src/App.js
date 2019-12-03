@@ -4,9 +4,13 @@ import HuntsIndexContainer from './containers/Hunts/HuntsIndexContainer';
 import HuntsShowContainer from './containers/Hunts/HuntsShowContainer';
 import LoginContainer from './containers/LoginContainer';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 class App extends React.Component {
+
+  mainOrLogin() {
+    return this.props.user.loggedIn ? <Redirect to="/hunts" /> : <Redirect to="/login" />
+  }
 
   render() {
     return (
@@ -14,10 +18,12 @@ class App extends React.Component {
         <div className="App">
           <Switch>
             <Route exact path="/">
+              {this.mainOrLogin()}
+            </Route>
+            <Route path="/login">
               <LoginContainer />
             </Route>
-            <Route
-              path="/hunts/:id"
+            <Route path="/hunts/:id"
               render={({match}) => {
                 const id = match.params.id
                 return (<HuntsShowContainer huntId={id}/>)
@@ -35,7 +41,7 @@ class App extends React.Component {
 
 const mapStateToProps = state => {
   return ({
-    token: state.user.token
+    user: state.user
   });
 }
 
